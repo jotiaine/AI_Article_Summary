@@ -2,65 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-  Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
-*/
+/* New styles */
 
+/* Change the font family and font size for the entire page */
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+}
+
+/* Change the background color of the main element */
 .main {
-  width: 100vw;
-  min-height: 100vh;
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  padding: 120px 24px 160px 24px;
-  pointer-events: none;
+  background-color: #f5f5f5;
 }
 
-.main:before {
-  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
-  position: absolute;
-  content: "";
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  top: 0;
+/* Change the border radius and padding of the black button */
+.black_btn {
+  border-radius: 10px;
+  padding: 10px 20px;
 }
 
-.main:after {
-  content: "";
-  background-image: url("/src/assets/grid.svg");
-  z-index: 1;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  opacity: 0.4;
-  filter: invert(1);
+/* Change the font size and color of the heading text */
+.head_text {
+  font-size: 4rem;
+  color: #333;
 }
 
+/* Change the background color and border of the link card */
+.link_card {
+  background-color: #fff;
+  border: 2px solid #ccc;
+}
+
+/* Modify the existing styles */
+
+/* Change the color of the gradient background to a darker shade */
 .gradient {
-  height: fit-content;
-  z-index: 3;
-  width: 100%;
-  max-width: 640px;
   background-image: radial-gradient(
       at 27% 37%,
-      hsla(215, 98%, 61%, 1) 0px,
+      hsla(215, 98%, 31%, 1) 0px,
       transparent 0%
     ),
-    radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 1) 0px, transparent 50%),
-    radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 1) 0px, transparent 50%),
-    radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 1) 0px, transparent 50%),
-    radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 1) 0px, transparent 50%),
-    radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 1) 0px, transparent 50%),
-    radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 1) 0px, transparent 50%);
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
-  filter: blur(100px) saturate(150%);
-  top: 80px;
-  opacity: 0.15;
+    radial-gradient(at 97% 21%, hsla(125, 98%, 42%, 1) 0px, transparent 50%),
+    radial-gradient(at 52% 99%, hsla(354, 98%, 31%, 1) 0px, transparent 50%),
+    radial-gradient(at 10% 29%, hsla(256, 96%, 37%, 1) 0px, transparent 50%),
+    radial-gradient(at 97% 96%, hsla(38, 60%, 44%, 1) 0px, transparent 50%),
+    radial-gradient(at 33% 50%, hsla(222, 67%, 43%, 1) 0px, transparent 50%),
+    radial-gradient(at 79% 53%, hsla(343, 68%, 49%, 1) 0px, transparent 50%);
+}
+
+/* Change the color and position of the radial gradient overlay */
+.main:before {
+  background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #555 100%);
+  top: -20px;
+}
+
+/* Change the opacity and blur of the gradient element */
+.gradient {
+  opacity: 0.2;
+  filter: blur(50px) saturate(120%);
+}
+
+/* Change the font size and weight of the orange gradient text */
+.orange_gradient {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+/* Change the border radius and padding of the URL input field */
+.url_input {
+  border-radius: 5px;
+  padding: 8px 12px;
 }
 
 @media screen and (max-width: 640px) {
