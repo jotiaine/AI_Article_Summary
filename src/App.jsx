@@ -101,16 +101,24 @@ const App = () => {
 
     if (existingArticle) return setArticle(existingArticle);
 
-    const { data } = await getSummary({ articleUrl: article.url });
-    if (data && data.summary) {
-      const newArticle = { ...article, summary: data.summary };
-      const updatedAllArticles = [newArticle, ...allArticles];
-
-      // update state and local storage
-      setArticle(newArticle);
-      setAllArticles(updatedAllArticles);
-      localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+    const lengths = [1, 3, 6]; // the desired summary lengths
+    const summaries = [];
+    for (const length of lengths) {
+      const { data } = await getSummary({ articleUrl: article.url, length });
+      if (data && data.summary) {
+        summaries.push(data.summary);
+      } else {
+        summaries.push("");
+      }
     }
+
+    const newArticle = { ...article, summaries };
+    const updatedAllArticles = [newArticle, ...allArticles];
+
+    // update state and local storage
+    setArticle(newArticle);
+    setAllArticles(updatedAllArticles);
+    localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
   };
 
   // copy the url and toggle the icon for user feedback
