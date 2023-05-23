@@ -1,7 +1,7 @@
 import "./App.css";
 
-import { useLazyGetSummaryQuery } from "./services/article";
 import React, { useState, useEffect } from "react";
+import { useLazyGetSummaryQuery } from "./services/article";
 import Hero from "./components/Hero";
 import SearchForm from "./components/SearchForm";
 import History from "./components/History";
@@ -46,79 +46,81 @@ const App = () => {
       defaultVoice,
       text: "",
       isSpeaking: false,
+      currentSummary: "",
     });
   }, []);
 
   const handleClick = (text, rate) => {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = speech.defaultVoice;
-
     utterance.rate = rate;
 
     if (speech.isSpeaking) {
-      speechSynthesis.cancel();
-      setSpeech({
-        ...speech,
+      speech.synthesis.cancel();
+      setSpeech((prevSpeech) => ({
+        ...prevSpeech,
         isSpeaking: false,
-      });
+      }));
     } else {
+      const currentSummary = article.summary;
+
       utterance.onstart = () => {
-        setSpeech({
-          ...speech,
+        setSpeech((prevSpeech) => ({
+          ...prevSpeech,
           isSpeaking: true,
-        });
+        }));
       };
 
-      speechSynthesis.speak(utterance);
-      setSpeech({
-        ...speech,
+      speech.synthesis.speak(utterance);
+      setSpeech((prevSpeech) => ({
+        ...prevSpeech,
         isSpeaking: true,
-        text: text,
-      });
+        text,
+        currentSummary,
+      }));
 
       utterance.onend = () => {
-        setSpeech({
-          ...speech,
+        setSpeech((prevSpeech) => ({
+          ...prevSpeech,
           isSpeaking: false,
-        });
-        rateInput.removeEventListener("input");
+        }));
       };
     }
-
-    const rateInput = document.getElementById("rate");
-    rateInput.addEventListener("input", () => {
-      utterance.rate = rateInput.value;
-      speechSynthesis.speak(utterance);
-    });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (params) => {
+    const { length, articleUrl } = params;
 
-    const existingArticle = allArticles.find(
-      (item) => item.url === article.url
-    );
+    const summaryLength = length === "medium" ? 3 : length === "long" ? 5 : 1;
 
-    if (existingArticle) return setArticle(existingArticle);
+    try {
+      const { data } = await getSummary({
+        articleUrl: articleUrl, // Use the correct variable here
+        length: summaryLength,
+      });
 
-    const lengths = [1, 3, 6]; // the desired summary lengths
-    const summaries = [];
-    for (const length of lengths) {
-      const { data } = await getSummary({ articleUrl: article.url, length });
       if (data && data.summary) {
-        summaries.push(data.summary);
+        const { summary } = data;
+
+        // Update the article state with the new article URL and summary
+        setArticle({ url: articleUrl, summary });
+
+        // Create a new array of articles with the updated article added to the beginning
+        const updatedArticles = [{ url: articleUrl, summary }, ...allArticles];
+
+        // Update the allArticles state with the new array
+        setAllArticles(updatedArticles);
+
+        // Save the updated articles array to localStorage
+        localStorage.setItem("articles", JSON.stringify(updatedArticles));
       } else {
-        summaries.push("");
+        // Handle the case when the response data or summary is undefined
+        console.error("Invalid response data:", data);
       }
+    } catch (error) {
+      // Handle any other errors that occur during the API call
+      console.error("Error:", error);
     }
-
-    const newArticle = { ...article, summaries };
-    const updatedAllArticles = [newArticle, ...allArticles];
-
-    // update state and local storage
-    setArticle(newArticle);
-    setAllArticles(updatedAllArticles);
-    localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
   };
 
   // copy the url and toggle the icon for user feedback

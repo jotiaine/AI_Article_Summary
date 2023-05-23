@@ -12,6 +12,7 @@ function Summaries({ isFetching, error, article = {}, handleClick, speech }) {
 
     if (speech.isSpeaking) {
       speech.synthesis.cancel();
+
       handleClick(summary, newRate);
     }
   };
