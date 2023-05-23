@@ -3,7 +3,7 @@ import { copy, tick } from "../assets";
 
 function History({ allArticles, setArticle, handleCopy, copied }) {
   return (
-    <div className="my-10 max-w-full flex justify-center items-center">
+    <div className="my-0 max-w-full flex justify-center items-center">
       <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
         {allArticles.reverse().map((item, index) => (
           <div

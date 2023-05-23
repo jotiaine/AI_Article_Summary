@@ -91,7 +91,7 @@ const App = () => {
   const handleSubmit = async (params) => {
     const { length, articleUrl } = params;
 
-    const summaryLength = length === "medium" ? 3 : length === "long" ? 5 : 1;
+    const summaryLength = length === "medium" ? 5 : length === "long" ? 10 : 1;
 
     try {
       const { data } = await getSummary({
@@ -136,6 +136,16 @@ const App = () => {
     }
   };
 
+  const handleClearList = () => {
+    // if articles is empty, return
+    if (allArticles.length === 0) return;
+
+    setAllArticles([]); // Clear the list by setting it to an empty array
+    localStorage.removeItem("articles"); // Remove the articles from localStorage
+    // load the page
+    window.location.reload();
+  };
+
   return (
     <main>
       {/* <div className="main">
@@ -147,7 +157,7 @@ const App = () => {
         <section className="mt-16 w-full max-w-xl">
           <div className="flex flex-col w-full gap-2">
             {/* Search */}
-            <SearchForm onSubmit={handleSubmit} />
+            <SearchForm onSubmit={handleSubmit} onClearList={handleClearList} />
 
             {/* History */}
             <History
