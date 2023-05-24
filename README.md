@@ -1,11 +1,17 @@
 # AI_Article_Summary
 
-This code is written in JavaScript and uses the React framework to create a single-page web application. The code consists of three files: main.jsx, App.jsx, and App.css. Here's what each file does:
+This program is a React application that enables article summarization and management. The application uses various state variables such as article, allArticles, copied, and speech, as well as hooks like useLazyGetSummaryQuery and useState.
 
-main.jsx: This file is the entry point for the React app. It imports React and ReactDOM libraries, the App component from the App.jsx file, and the Provider component from the react-redux library. It also imports the store object from the store.js file in the services folder. Finally, it uses the ReactDOM.createRoot method to render the App component wrapped in a Provider component and a React.StrictMode component to the root element of the DOM.
+The main component of the application, app.jsx, loads by checking the stored articles in the localStorage storage and updates the allArticles state variable with their data. It also checks if speech recognition is available in the browser and creates the necessary speech-related data in the speech state variable.
 
-App.jsx: This file defines the App component, which is a functional component that returns the JSX for the main content of the web page. It imports the Hero and Demo components from the components folder and the App.css file. The App component returns a main element with two nested div elements. The first div element has a class of main and contains a radial gradient background and a grid background. The second div element has a class of app and contains the Hero and Demo components.
+When a user submits an article URL and requests its summarization, the handleSubmit function makes a request to the service using the useLazyGetSummaryQuery hook. Upon receiving a response from the service, it updates the article state variable with the new article URL and summary. Additionally, it updates the allArticles state variable by adding the new article's details to the beginning of the list and saves the updated list to the localStorage storage.
 
-App.css: This file contains the styles for the App component. It includes some styles for the gradient and grid background of the main element and also includes some styles for the Hero and Demo components, such as font size and colors.
+When a user wants to listen to the summarized article aloud, the handleClick function initiates speech recognition by creating a speech recognition object and setting desired properties such as voice and speech rate. If speech recognition is already in progress, it is interrupted. Otherwise, it starts speaking and updates the speech state variable accordingly. When the speech is finished, the handleClick function updates the speech state variable to stop speech recognition.
 
-Overall, this code creates a simple web page with a gradient and grid background and two components: Hero and Demo. It also uses the redux library to manage state in the application, but the details of this implementation are not shown in the provided code.
+The application also includes functionality to copy the article URL to the clipboard and provides visual feedback for the copying action.
+
+Additionally, the component renders a few other components such as Hero, SearchForm, History, and Summaries, which correspond to different parts of the application's user interface.
+
+In summary, this program implements article summarization and management functions in a React application, utilizing various state variables and hooks for this purpose.
+
+![Alt Text](./src/assets/app_pic.png)
